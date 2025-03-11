@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Improved logic B7 - Copy - Updated Color UX</title>
+  <title>Improved logic 7B3 - Random chart</title>
   <style>
         /* 
       Refined Dark Theme:
@@ -1001,122 +1001,126 @@ window.placeSellOrder = placeSellOrder;
     }
     
     // Draw a simple line chart on window load
-  window.onload = function() {
+ window.onload = function() {
   const canvas = document.getElementById('lineChart');
   const ctx = canvas.getContext('2d');
-
-  // Example data points
-  const data = [20, 100, 140, 90, 110, 100, 130, 80, 200];
-
-  // Smaller chart configuration
-  const padding = 25;           // Less padding for a smaller canvas
-  const pointRadius = 3;        // Slightly smaller markers
-  const spacingX = (canvas.width - padding * 2) / (data.length - 1);
-
-  // Find min/max for scaling
-  const maxDataValue = Math.max(...data);
-  const minDataValue = Math.min(...data);
-
-  // Determine the chart area (top/bottom)
-  const chartTop = padding;
-  const chartBottom = canvas.height - padding;
-  const chartHeight = chartBottom - chartTop;
-
-  // Convert data value -> Y coordinate
-  function getY(value) {
-    const scale = (value - minDataValue) / (maxDataValue - minDataValue);
-    return chartBottom - scale * chartHeight;
-  }
-
-  // Clear the canvas
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  // 1) Draw a subtle background grid
-  ctx.strokeStyle = '#2dd4bf';
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  // Vertical lines
-  for (let x = padding; x <= canvas.width - padding; x += spacingX) {
-    ctx.moveTo(x, chartTop);
-    ctx.lineTo(x, chartBottom);
-  }
-  // Horizontal lines (4 steps for a small chart)
+  const padding = 25, pointRadius = 3;
   const steps = 4;
-  for (let i = 0; i <= steps; i++) {
-    const y = chartBottom - (chartHeight / steps) * i;
-    ctx.moveTo(padding, y);
-    ctx.lineTo(canvas.width - padding, y);
-  }
-  ctx.stroke();
-  ctx.closePath();
-
-  // 2) Curved line + gradient fill
-  ctx.lineWidth = 2;
-  ctx.strokeStyle = '#4caf50'; // line color
-  ctx.fillStyle = createGradient(); // fill gradient
-
-  ctx.beginPath();
-  ctx.moveTo(padding, getY(data[0]));
-
-  for (let i = 1; i < data.length; i++) {
-    // Quadratic curve for smoothing
-    const xMid = padding + (i - 0.5) * spacingX;
-    const yMid = (getY(data[i - 1]) + getY(data[i])) / 2;
-    const xCurrent = padding + i * spacingX;
-    const yCurrent = getY(data[i]);
-
-    ctx.quadraticCurveTo(
-      padding + (i - 1) * spacingX, 
-      getY(data[i - 1]), 
-      xMid, 
-      yMid
-    );
-    ctx.quadraticCurveTo(xMid, yMid, xCurrent, yCurrent);
-  }
-
-  // Fill under the line
-  ctx.lineTo(padding + (data.length - 1) * spacingX, chartBottom);
-  ctx.lineTo(padding, chartBottom);
-  ctx.closePath();
-  ctx.fill();   
-  ctx.stroke(); 
-
-  // 3) Circle markers
-  ctx.fillStyle = '#ffffff';
-  for (let i = 0; i < data.length; i++) {
-    const x = padding + i * spacingX;
-    const y = getY(data[i]);
+  const numPoints = 9;
+  const spacingX = (canvas.width - padding * 2) / (numPoints - 1);
+  
+  // Draw the static background grid once
+  function drawGrid() {
+    ctx.strokeStyle = '#2dd4bf';
+    ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.arc(x, y, pointRadius, 0, 2 * Math.PI);
-    ctx.fill();
+    // Vertical grid lines
+    for (let x = padding; x <= canvas.width - padding; x += spacingX) {
+      ctx.moveTo(x, padding);
+      ctx.lineTo(x, canvas.height - padding);
+    }
+    // Horizontal grid lines
+    for (let i = 0; i <= steps; i++) {
+      const y = canvas.height - padding - ((canvas.height - 2 * padding) / steps) * i;
+      ctx.moveTo(padding, y);
+      ctx.lineTo(canvas.width - padding, y);
+    }
+    ctx.stroke();
     ctx.closePath();
   }
-
-  // 4) (Optional) Basic axis labels
-  ctx.fillStyle = '#ffffff';
-  ctx.font = '10px Arial';
-  ctx.textAlign = 'center';
-  // X labels
-  for (let i = 0; i < data.length; i++) {
-    const x = padding + i * spacingX;
-    ctx.fillText(`W ${i+1}`, x, chartBottom + 12);
+  
+  // Generate a new random data array of numPoints between 20 and 200
+  function generateData() {
+    return Array.from({length: numPoints}, () => Math.floor(Math.random() * 150) + 100);
   }
-  // Y labels
-  for (let i = 0; i <= steps; i++) {
-    const val = minDataValue + ((maxDataValue - minDataValue) / steps) * i;
-    const y = chartBottom - (chartHeight / steps) * i;
-    ctx.textAlign = 'right';
-    ctx.fillText(val.toFixed(0), padding - 5, y + 3);
+  
+  // Given an array of data, determine min and max values
+  function getMinMax(data) {
+    return { min: Math.min(...data), max: Math.max(...data) };
   }
-
-  // Create the gradient from top to bottom
-  function createGradient() {
-    const gradient = ctx.createLinearGradient(0, chartTop, 0, chartBottom);
-    gradient.addColorStop(0, 'rgba(76, 175, 80, 0.4)'); // #4caf50 at 40% opacity
-    gradient.addColorStop(1, 'rgba(76, 175, 80, 0)');   // transparent
-    return gradient;
+  
+  // Convert data value to Y coordinate
+  function getY(value, min, max) {
+    const chartHeight = canvas.height - 2 * padding;
+    const scale = (value - min) / (max - min);
+    return canvas.height - padding - scale * chartHeight;
   }
+  
+  // Draw the line chart with gradient fill and circle markers
+  function drawLineChart(data) {
+    const { min, max } = getMinMax(data);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawGrid();
+    
+    // Create gradient fill for the line
+    const gradient = ctx.createLinearGradient(0, padding, 0, canvas.height - padding);
+    gradient.addColorStop(0, 'rgba(76, 175, 80, 0.4)');
+    gradient.addColorStop(1, 'rgba(76, 175, 80, 0)');
+    
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#4caf50';
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.moveTo(padding, getY(data[0], min, max));
+    
+    // Draw a smooth quadratic curve between data points
+    for (let i = 1; i < data.length; i++) {
+      const xPrev = padding + (i - 1) * spacingX;
+      const yPrev = getY(data[i - 1], min, max);
+      const xCurrent = padding + i * spacingX;
+      const yCurrent = getY(data[i], min, max);
+      const xMid = (xPrev + xCurrent) / 2;
+      const yMid = (yPrev + yCurrent) / 2;
+      ctx.quadraticCurveTo(xPrev, yPrev, xMid, yMid);
+      ctx.quadraticCurveTo(xMid, yMid, xCurrent, yCurrent);
+    }
+    
+    // Close the path for gradient fill
+    ctx.lineTo(padding + (data.length - 1) * spacingX, canvas.height - padding);
+    ctx.lineTo(padding, canvas.height - padding);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    
+    // Draw circle markers
+    ctx.fillStyle = '#ffffff';
+    for (let i = 0; i < data.length; i++) {
+      const x = padding + i * spacingX;
+      const y = getY(data[i], min, max);
+      ctx.beginPath();
+      ctx.arc(x, y, pointRadius, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.closePath();
+    }
+    
+    // Draw axis labels
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '10px Arial';
+    ctx.textAlign = 'center';
+    for (let i = 0; i < data.length; i++) {
+      ctx.fillText(`W ${i+1}`, padding + i * spacingX, canvas.height - padding + 12);
+    }
+    for (let i = 0; i <= steps; i++) {
+      const val = min + ((max - min) / steps) * i;
+      ctx.textAlign = 'right';
+      const y = canvas.height - padding - ((canvas.height - 2 * padding) / steps) * i + 3;
+      ctx.fillText(val.toFixed(0), padding - 5, y);
+    }
+  }
+  
+  // Animation loop: update chart with new random data periodically
+  function animateChart() {
+    const newData = generateData();
+    drawLineChart(newData);
+  }
+  
+  // Initial draw of the grid
+  drawGrid();
+  
+  // Update chart every second (1000ms)
+  setInterval(animateChart, 5000);
 };
+
 
 function updateUser() {
   // Grab the values from the three input fields
