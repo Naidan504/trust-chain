@@ -18,13 +18,14 @@
     */
 
     /* Global Styles */
-    body {
-      margin: 0;
-      padding: 0;
-      background: #1C2B3A; /* Dark navy */
-      font-family: Arial, sans-serif;
-      color: #fff;
-    }
+ /* Body / Main Background */
+body {
+  background: #0f172a;  /* Deep navy */
+  color: #f8fafc;       /* Near-white text */
+  font-family: Arial, sans-serif;
+}
+
+
     /* Centering the dashboard frame */
     #container {
       display: flex;
@@ -36,8 +37,8 @@
     #dashboard {
       width: 806px;
       height: 704px;
-      background: #1E2E3F; /* Slightly lighter for the container */
-      border: 2px solid #29527a; /* Teal border */
+    	 background: #1e293b;  /* Slightly lighter dark gray/blue */
+ 	 border: 2px solid #334155; /* Medium gray border */
       display: grid;
       grid-template-columns: repeat(4, 200px);
       grid-template-rows: 200px 300px 200px;
@@ -56,9 +57,9 @@
       overflow: auto;
       scrollbar-width: thin;
       scrollbar-color: transparent transparent;
-      background: #022f55; /* Darker bluish for content sections */
+      background: #273343;  /* Another dark hue for contrast */
       position: relative;
-      border: 1px solid #29527a; /* Subtle border around each cell */
+      border: 1px solid #334155;
     }
     /* Grid area assignments */
     #A1 { grid-area: A1; }
@@ -95,19 +96,20 @@
       border-radius: 4px;
     }
 
+/* Text, Headings, etc. */
+h1, h2, h3, h4, h5, h6, p, span, label {
+  color: #f8fafc;
+}
+
     /* Buttons */
-    button {
-      cursor: pointer;
-      font-size: 12px;
-      background: #007ACC; /* Primary button color */
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      padding: 5px 8px;
-      transition: background 0.2s;
-    }
+	  button {
+	  background: #09f7ea;  /* Vibrant aqua */
+	  color: #0f172a;       /* Dark text for contrast on aqua background */
+	  border: none;
+		border-radius: 4px;
+	}
     button:hover {
-      background: #005b99; /* Hover accent */
+      background: #089c90;  /* Darker aqua on hover */
     }
 
     /* Label buttons */
@@ -118,14 +120,15 @@
       line-height: 20px;
       text-align: center;
       border-radius: 10px;
-      background: #3FA7D6; /* Secondary label color */
+      background: #4b5563;  /* Muted gray */
+  	color: #f8fafc;
       margin: 2px;
       font-size: 12px;
       cursor: pointer;
       transition: background 0.2s;
     }
     .label-btn:hover {
-      background: #005b99; /* Hover accent for labels */
+      background: #2d3239;  /* Slightly darker on hover */
     }
 
     /* Table styling */
@@ -138,7 +141,7 @@
       table-layout: fixed;
     }
     table, th, td {
-      border: 1px solid #29527a; /* Teal border for tables */
+      border: 1px solid #334155; /* Teal border for tables */
       padding: 4px;
       text-align: center;
     }
@@ -166,10 +169,17 @@
     /* Chart area in B2 */
     #B2 .chart-area {
       height: 200px;
-      background: #022f55;
+      background: #0;
       padding: 5px;
       border-bottom: 1px solid #29527a;
     }
+
+/* Chart Line */
+.chart-area path,
+.chart-area line {
+  stroke: #00ffd0;  /* Neon mint for chart lines */
+}
+
     #B2 .coin-container {
       overflow-x: auto;
       white-space: nowrap;
@@ -202,6 +212,12 @@
       border: 1px solid #29527a;
       border-radius: 8px;
     }
+
+/* Borders / Dividers */
+table, th, td, .modal-content {
+  border: 1px solid #334155;
+}
+
     .modal-row {
       border: 1px solid #29527a;
       padding: 5px;
@@ -363,19 +379,21 @@
         </div>
       </div>
       <!-- A4: User Block -->
-      <div class="grid-item" id="A4">
-        <div class="logo">👨‍💼</div>
-        <div style="margin-top:30px; text-align:center;">
-          <input type="text" placeholder="Bagi">
-          <input type="text" placeholder="bat@gmail.com">
-          <input type="text" placeholder="5021280612; Khaan">
-          <div style="margin-top:0px;">
-            <button onclick="updateUser()">Update</button>
-            <button onclick="toggleUserInputs()">Hide</button>
+<div class="grid-item" id="A4">
+  <div class="logo">👨‍💼</div>
+  <div style="margin-top:30px; text-align:center;">
+    <!-- Added IDs to inputs for easy retrieval -->
+    <input id="userName" type="text" placeholder="Bagi">
+    <input id="userEmail" type="text" placeholder="bat@gmail.com">
+    <input id="userInfo" type="text" placeholder="5021280612; Khaan">
+    <div style="margin-top:0px;">
+      <!-- Wire up our new functions on click -->
+      <button onclick="updateUser()">Update</button>
+      <button onclick="toggleUserInputs()">Hide</button>
+    </div>
+  </div>
+</div>
 
-          </div>
-        </div>
-      </div>
       
       <!-- Row B -->
       <!-- B1: Network Block with Hexagon Nodes -->
@@ -759,73 +777,139 @@
     }
     document.getElementById('cbAction').onclick = processCentralBankAction;
     
-    // Trade Engine Logic
-    class Order {
-      constructor(id, type, price, quantity, timestamp = Date.now()) {
-        this.id = id;
-        this.type = type; // 'buy' or 'sell'
-        this.price = price;
-        this.quantity = quantity;
-        this.timestamp = timestamp;
-      }
+// Trade Engine Logic
+
+// Order class: represents a single buy or sell order
+class Order {
+  constructor(id, type, price, quantity, timestamp = Date.now()) {
+    this.id = id;            // Unique ID
+    this.type = type;        // 'buy' or 'sell'
+    this.price = price;      // Limit price
+    this.quantity = quantity;
+    this.timestamp = timestamp;
+  }
+}
+
+// Helper compare functions for insertion
+function buyCompare(a, b) {
+  // Higher price first; if equal, earlier timestamp first
+  if (a.price !== b.price) return b.price - a.price;
+  return a.timestamp - b.timestamp;
+}
+function sellCompare(a, b) {
+  // Lower price first; if equal, earlier timestamp first
+  if (a.price !== b.price) return a.price - b.price;
+  return a.timestamp - b.timestamp;
+}
+
+// Insert order via binary search to keep array sorted
+function insertOrder(sortedArray, newOrder, compareFn) {
+  let left = 0;
+  let right = sortedArray.length - 1;
+
+  while (left <= right) {
+    const mid = Math.floor((left + right) / 2);
+    const cmp = compareFn(newOrder, sortedArray[mid]);
+    if (cmp < 0) {
+      right = mid - 1;
+    } else {
+      left = mid + 1;
     }
-    class OrderBook {
-      constructor() {
-        this.buyOrders = [];
-        this.sellOrders = [];
-        this.orderIdCounter = 1;
-      }
-      addOrder(type, price, quantity) {
-        const order = new Order(this.orderIdCounter++, type, price, quantity);
-        if (type === 'buy') {
-          this.buyOrders.push(order);
-          // Sort buy orders: higher price first, then earlier time
-          this.buyOrders.sort((a, b) => b.price - a.price || a.timestamp - b.timestamp);
-        } else if (type === 'sell') {
-          this.sellOrders.push(order);
-          // Sort sell orders: lower price first, then earlier time
-          this.sellOrders.sort((a, b) => a.price - b.price || a.timestamp - b.timestamp);
-        }
-        console.log(`Order added: ${JSON.stringify(order)}`);
-        this.matchOrders();
-      }
-      matchOrders() {
-        while (this.buyOrders.length && this.sellOrders.length &&
-               this.buyOrders[0].price >= this.sellOrders[0].price) {
-          const buyOrder = this.buyOrders[0];
-          const sellOrder = this.sellOrders[0];
-          const tradedQuantity = Math.min(buyOrder.quantity, sellOrder.quantity);
-          const tradePrice = sellOrder.price;
-          console.log(`Trade executed: ${tradedQuantity} units @ ${tradePrice} between BuyOrder ${buyOrder.id} and SellOrder ${sellOrder.id}`);
-          buyOrder.quantity -= tradedQuantity;
-          sellOrder.quantity -= tradedQuantity;
-          if (buyOrder.quantity === 0) this.buyOrders.shift();
-          if (sellOrder.quantity === 0) this.sellOrders.shift();
-        }
-      }
-    }
-    var orderBook = new OrderBook();
-    function placeBuyOrder() {
-      var price = parseFloat(prompt("Enter buy order price:"));
-      var quantity = parseFloat(prompt("Enter buy order quantity:"));
-      if (!isNaN(price) && !isNaN(quantity) && price > 0 && quantity > 0) {
-        orderBook.addOrder('buy', price, quantity);
-      } else {
-        alert("Invalid input for buy order.");
-      }
-    }
-    function placeSellOrder() {
-      var price = parseFloat(prompt("Enter sell order price:"));
-      var quantity = parseFloat(prompt("Enter sell order quantity:"));
-      if (!isNaN(price) && !isNaN(quantity) && price > 0 && quantity > 0) {
-        orderBook.addOrder('sell', price, quantity);
-      } else {
-        alert("Invalid input for sell order.");
-      }
-    }
-    window.placeBuyOrder = placeBuyOrder;
-    window.placeSellOrder = placeSellOrder;
+  }
+
+  // Insert at the correct position
+  sortedArray.splice(left, 0, newOrder);
+}
+
+// OrderBook class: manages two sorted lists (buy/sell), matches trades
+class OrderBook {
+  constructor() {
+    this.buyOrders = [];   // Sorted descending by price
+    this.sellOrders = [];  // Sorted ascending by price
+    this.orderIdCounter = 1;
+    this.trades = [];      // Store executed trades (optional)
+  }
+
+  addOrder(type, price, quantity) {
+    const order = new Order(this.orderIdCounter++, type, price, quantity);
     
+    if (type === 'buy') {
+      insertOrder(this.buyOrders, order, buyCompare);
+    } else {
+      insertOrder(this.sellOrders, order, sellCompare);
+    }
+
+    console.log(`Order added: ${JSON.stringify(order)}`);
+    this.matchOrders();
+  }
+
+  // Match top buy vs. top sell as long as buy >= sell
+  matchOrders() {
+    while (this.buyOrders.length && this.sellOrders.length &&
+           this.buyOrders[0].price >= this.sellOrders[0].price) {
+      
+      const buyOrder = this.buyOrders[0];
+      const sellOrder = this.sellOrders[0];
+      const tradedQuantity = Math.min(buyOrder.quantity, sellOrder.quantity);
+      const tradePrice = sellOrder.price; // Typically, match at the sell order's price
+
+      console.log(
+        `Trade executed: ${tradedQuantity} units @ ${tradePrice} `
+        + `between BuyOrder ${buyOrder.id} and SellOrder ${sellOrder.id}`
+      );
+
+      // (Optional) Store the trade
+      this.trades.push({
+        buyOrderId: buyOrder.id,
+        sellOrderId: sellOrder.id,
+        price: tradePrice,
+        quantity: tradedQuantity,
+        timestamp: Date.now()
+      });
+
+      // Update order quantities
+      buyOrder.quantity -= tradedQuantity;
+      sellOrder.quantity -= tradedQuantity;
+
+      // Remove fully filled orders
+      if (buyOrder.quantity === 0) {
+        this.buyOrders.shift(); // remove from front
+      }
+      if (sellOrder.quantity === 0) {
+        this.sellOrders.shift(); // remove from front
+      }
+    }
+  }
+}
+
+// Global instance of the optimized OrderBook
+var orderBook = new OrderBook();
+
+// Simple functions to place orders from user prompts
+function placeBuyOrder() {
+  const price = parseFloat(prompt("Enter buy order price:"));
+  const quantity = parseFloat(prompt("Enter buy order quantity:"));
+  if (!isNaN(price) && !isNaN(quantity) && price > 0 && quantity > 0) {
+    orderBook.addOrder('buy', price, quantity);
+  } else {
+    alert("Invalid input for buy order.");
+  }
+}
+
+function placeSellOrder() {
+  const price = parseFloat(prompt("Enter sell order price:"));
+  const quantity = parseFloat(prompt("Enter sell order quantity:"));
+  if (!isNaN(price) && !isNaN(quantity) && price > 0 && quantity > 0) {
+    orderBook.addOrder('sell', price, quantity);
+  } else {
+    alert("Invalid input for sell order.");
+  }
+}
+
+// Expose these functions if you want to call them from buttons, etc.
+window.placeBuyOrder = placeBuyOrder;
+window.placeSellOrder = placeSellOrder;
+
     // Calculator Functions
     function calcInput(value) {
       var display = document.getElementById('calcDisplay');
@@ -880,7 +964,7 @@
     }
     
     // Draw a simple line chart on window load
-      window.onload = function() {
+  window.onload = function() {
   const canvas = document.getElementById('lineChart');
   const ctx = canvas.getContext('2d');
 
@@ -997,7 +1081,7 @@
   }
 };
 
-    function updateUser() {
+function updateUser() {
   // Grab the values from the three input fields
   const name = document.getElementById('userName').value;
   const email = document.getElementById('userEmail').value;
@@ -1014,7 +1098,8 @@ function toggleUserInputs() {
     input.type = (input.type === 'text') ? 'password' : 'text';
   });
 }
-    
+
+
   </script>
 </body>
 </html>
