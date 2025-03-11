@@ -4,297 +4,350 @@
   <meta charset="UTF-8">
   <title>Improved logic B7 - Copy - Updated Color UX</title>
   <style>
-    /* 
-      Dark Theme Color Scheme:
-      - Body (primary bg): #1C2B3A
-      - Dashboard frame:   #1E2E3F
-      - Grid items:        #022f55
-      - Text:              #FFFFFF
-      - Borders/dividers:  #29527a
-      - Primary buttons:   #007ACC
-      - Secondary labels:  #3FA7D6
-      - Hover accent:      #005b99
-      - Chart line:        #4caf50
+        /* 
+      Refined Dark Theme:
+      - Body: #0f172a (deep navy)
+      - Dashboard: #1e293b (dark slate)
+      - Grid items: #273343 (slightly lighter slate)
+      - Accent / Primary: #14b8a6 (teal)
+      - Hover accent: #0d9488 (darker teal)
+      - Borders/dividers: #475569 (lighter grayish-blue)
+      - Text: #f8fafc (near-white)
+      - Chart line: #2dd4bf (bright teal)
     */
 
-    /* Global Styles */
-    body {
-      margin: 0;
-      padding: 0;
-      background: #1C2B3A; /* Dark navy */
-      font-family: Arial, sans-serif;
-      color: #fff;
-    }
-    /* Centering the dashboard frame */
-    #container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    /* Dashboard Frame */
-    #dashboard {
-      width: 806px;
-      height: 704px;
-      background: #1E2E3F; /* Slightly lighter for the container */
-      border: 2px solid #29527a; /* Teal border */
-      display: grid;
-      grid-template-columns: repeat(4, 200px);
-      grid-template-rows: 200px 300px 200px;
-      grid-template-areas:
-        "A1 A2 A3 A4"
-        "B1 B2 B2 B4"
-        "C1 C2 C3 C4";
-      gap: 2px;
-    }
-    .hidden { display: none !important; }
-    /* Grid item styling */
-    .grid-item {
-      padding: 10px;
-      box-sizing: border-box;
-      max-height: 100%;
-      overflow: auto;
-      scrollbar-width: thin;
-      scrollbar-color: transparent transparent;
-      background: #022f55; /* Darker bluish for content sections */
-      position: relative;
-      border: 1px solid #29527a; /* Subtle border around each cell */
-    }
-    /* Grid area assignments */
-    #A1 { grid-area: A1; }
-    #A2 { grid-area: A2; }
-    #A3 { grid-area: A3; }
-    #A4 { grid-area: A4; }
-    #B1 { grid-area: B1; }
-    #B2 { grid-area: B2; }
-    #B4 { grid-area: B4; }
-    #C1 { grid-area: C1; }
-    #C2 { grid-area: C2; }
-    #C3 { grid-area: C3; }
-    #C4 { grid-area: C4; }
-    
-    /* Logo styling */
-    .logo {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      font-size: 18px;
-    }
+/* 
+  Finance Blue Theme
+  - Primary Background: #0f172a (deep navy)
+  - Secondary Background (dashboard): #1e293b (dark slate)
+  - Accent / Buttons: #14b8a6 (teal)
+  - Hover Accent: #0d9488 (darker teal)
+  - Borders/Dividers: #475569 (blue-gray)
+  - Text: #f8fafc (off-white)
+  - Table Zebra Rows: #273343 / #2c3b4a
+  - Chart line: #2dd4bf (bright teal)
+*/
 
-    /* Input fields */
-    input[type="text"],
-    input[type="password"],
-    input[type="number"] {
-      width: calc(100% - 20px);
-      padding: 5px;
-      margin: 5px 0;
-      box-sizing: border-box;
-      background: #fff;
-      color: #000;
-      border: 1px solid #29527a;
-      border-radius: 4px;
-    }
+/* Global Styles */
+body {
+  margin: 0;
+  padding: 0;
+  background: #0f172a;
+  color: #f8fafc;
+  font-family: Arial, sans-serif;
+}
+#container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
-    /* Buttons */
-    button {
-      cursor: pointer;
-      font-size: 12px;
-      background: #007ACC; /* Primary button color */
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      padding: 5px 8px;
-      transition: background 0.2s;
-    }
-    button:hover {
-      background: #005b99; /* Hover accent */
-    }
+/* Dashboard Frame */
+#dashboard {
+  width: 806px;
+  height: 704px;
+  background: #1e293b;
+  border: 2px solid #475569;
+  display: grid;
+  grid-template-columns: repeat(4, 200px);
+  grid-template-rows: 200px 300px 200px;
+  grid-template-areas:
+    "A1 A2 A3 A4"
+    "B1 B2 B2 B4"
+    "C1 C2 C3 C4";
+  gap: 2px;
+}
 
-    /* Label buttons */
-    .label-btn {
-      display: inline-block;
-      width: 60px;
-      height: 20px;
-      line-height: 20px;
-      text-align: center;
-      border-radius: 10px;
-      background: #3FA7D6; /* Secondary label color */
-      margin: 2px;
-      font-size: 12px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .label-btn:hover {
-      background: #005b99; /* Hover accent for labels */
-    }
+/* Grid Items */
+.grid-item {
+  padding: 10px;
+  box-sizing: border-box;
+  max-height: 100%;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  background: #273343;
+  position: relative;
+  border: 1px solid #475569;
+}
+/* Grid area assignments */
+#A1 { grid-area: A1; }
+#A2 { grid-area: A2; }
+#A3 { grid-area: A3; }
+#A4 { grid-area: A4; }
+#B1 { grid-area: B1; }
+#B2 { grid-area: B2; }
+#B4 { grid-area: B4; }
+#C1 { grid-area: C1; }
+#C2 { grid-area: C2; }
+#C3 { grid-area: C3; }
+#C4 { grid-area: C4; }
 
-    /* Table styling */
-    table {
-      width: 95%;
-      margin: 0 auto;
-      border-collapse: collapse;
-      font-size: 12px;
-      overflow: hidden;
-      table-layout: fixed;
-    }
-    table, th, td {
-      border: 1px solid #29527a; /* Teal border for tables */
-      padding: 4px;
-      text-align: center;
-    }
+/* Logo styling */
+.logo {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 18px;
+}
 
-    /* Asset icon */
-    .asset-icon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: #007ACC; /* Match primary button color */
-      color: #fff;
-      font-size: 10px;
-      border: 1px solid #fff;
-      margin: 2px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .asset-icon:hover {
-      background: #005b99;
-    }
+/* Inputs */
+input[type="text"],
+input[type="password"],
+input[type="number"] {
+  width: calc(100% - 20px);
+  padding: 6px;
+  margin: 5px 0;
+  box-sizing: border-box;
+  background: #fff;
+  color: #000;
+  border: 1px solid #475569;
+  border-radius: 4px;
+  font-size: 14px;
+}
 
-    /* Chart area in B2 */
-    #B2 .chart-area {
-      height: 200px;
-      background: #022f55;
-      padding: 5px;
-      border-bottom: 1px solid #29527a;
-    }
-    #B2 .coin-container {
-      overflow-x: auto;
-      white-space: nowrap;
-      height: 50px;
-      margin-top: 5px;
-      display: flex;
-      gap: 5px;
-    }
-    #B2 .coin-container .asset-icon { margin-right: 5px; }
+/* Headings, text, etc. */
+h1, h2, h3, h4, h5, h6, p, span, label {
+  color: #f8fafc;
+}
 
-    /* Modal styles */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.7);
-      justify-content: center;
-      align-items: center;
-      z-index: 100;
-    }
-    .modal-content {
-      background: #1E2E3F;
-      padding: 10px;
-      width: 330px;
-      height: 450px;
-      display: grid;
-      grid-template-rows: repeat(4, 1fr);
-      gap: 5px;
-      border: 1px solid #29527a;
-      border-radius: 8px;
-    }
-    .modal-row {
-      border: 1px solid #29527a;
-      padding: 5px;
-      overflow: auto;
-    }
-    .file-list {
-      height: 100%;
-      overflow-y: auto;
-      border-right: 1px solid #29527a;
-    }
-    .file-item {
-      display: flex;
-      align-items: center;
-      font-size: 12px;
-      margin: 2px 0;
-    }
-    .file-item span { margin-left: 5px; }
-    .modal-buttons {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-around;
-      align-items: center;
-    }
+/* Buttons */
+button {
+  cursor: pointer;
+  font-size: 14px;
+  background: #14b8a6;
+  color: #0f172a;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 10px;
+  transition: background 0.2s;
+  margin: 2px;
+}
+button:hover {
+  background: #0d9488;
+}
 
-    /* Chat messages */
-    .chat-messages {
-      max-height: 120px;
-      overflow-y: auto;
-      margin-top: 10px;
-    }
-    .chat-message {
-      display: flex;
-      align-items: center;
-      padding: 4px 0;
-      font-size: 12px;
-      border-bottom: 1px solid #29527a;
-    }
-    .chat-message .avatar { margin-right: 8px; }
-    .chat-message .time {
-      font-size: 10px;
-      text-align: right;
-      width: 40px;
-    }
+/* Label Buttons */
+.label-btn {
+  display: inline-block;
+  width: 60px;
+  height: 22px;
+  line-height: 22px;
+  text-align: center;
+  border-radius: 10px;
+  background: #475569;
+  color: #f8fafc;
+  margin: 2px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.label-btn:hover {
+  background: #364152;
+}
 
-    /* Control buttons container (bottom-right) */
-    #controlButtons {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #1E2E3F;
-      padding: 10px;
-      border: 2px solid #29527a;
-      border-radius: 8px;
-    }
-    #controlButtons button {
-      margin: 0 5px;
-      font-size: 12px;
-      padding: 5px 10px;
-      background: #007ACC;
-    }
-    #controlButtons button:hover {
-      background: #005b99;
-    }
+/* Table styling (basic) */
+table {
+  width: 95%;
+  margin: 0 auto;
+  border-collapse: collapse;
+  font-size: 12px;
+  table-layout: fixed;
+}
+table, th, td {
+  border: 1px solid #475569;
+  padding: 4px;
+  text-align: center;
+}
 
-    /* Calculator Styles */
-    #calculator {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 5px;
-      justify-items: center;
-    }
-    #calcDisplay {
-      grid-column: span 4;
-      width: 100%;
-      padding: 5px;
-      text-align: right;
-      background: #fff;
-      color: #000;
-    }
-    .calc-btn {
-      width: 100%;
-      height: 40px;
-      background: #007ACC;
-      border: none;
-      color: #fff;
-      transition: background 0.2s;
-    }
-    .calc-btn:hover {
-      background: #005b99;
-    }
-    .calc-wide {
-      grid-column: span 2;
-    }
+/* "Killer Tables" extension */
+table.killer-table {
+  width: 100%;
+  border: 1px solid #475569;  /* Outer border color */
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* Subtle shadow */
+  margin: 0;  /* Adjust as needed */
+}
+/* Sticky header (optional) 
+.killer-table thead th {
+  position: sticky;
+  top: 0;
+  background: #1e293b;
+  color: #f8fafc;
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+*/
+.killer-table tbody tr {
+  transition: background-color 0.2s ease;
+}
+/* Zebra striping */
+.killer-table tbody tr:nth-of-type(odd) {
+  background-color: #273343;
+}
+.killer-table tbody tr:nth-of-type(even) {
+  background-color: #2c3b4a;
+}
+/* Hover highlight */
+.killer-table tbody tr:hover {
+  background-color: #364152 !important;
+}
+/* Remove default cell borders; rely on row backgrounds */
+.killer-table th,
+.killer-table td {
+  border: none;
+  padding: 6px;
+  color: #f8fafc;
+}
+
+/* Asset Icon */
+.asset-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #14b8a6;
+  color: #fff;
+  font-size: 10px;
+  border: 1px solid #fff;
+  margin: 2px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.asset-icon:hover {
+  background: #0d9488;
+}
+
+/* Chart area in B2 */
+#B2 .chart-area {
+  height: 200px;
+  padding: 5px;
+  border-bottom: 1px solid #475569;
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.7);
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+.modal-content {
+  background: #1e293b;
+  padding: 10px;
+  width: 330px;
+  height: 450px;
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+  gap: 5px;
+  border: 1px solid #475569;
+  border-radius: 8px;
+}
+.modal-row {
+  border: 1px solid #475569;
+  padding: 5px;
+  overflow: auto;
+}
+.file-list {
+  height: 100%;
+  overflow-y: auto;
+  border-right: 1px solid #475569;
+}
+.file-item {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  margin: 2px 0;
+}
+.file-item span { margin-left: 5px; }
+.modal-buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+/* Chat messages */
+.chat-messages {
+  max-height: 120px;
+  overflow-y: auto;
+  margin-top: 10px;
+}
+.chat-message {
+  display: flex;
+  align-items: center;
+  padding: 4px 0;
+  font-size: 12px;
+  border-bottom: 1px solid #475569;
+}
+.chat-message .avatar { margin-right: 8px; }
+.chat-message .time {
+  font-size: 10px;
+  text-align: right;
+  width: 40px;
+}
+
+/* Control Buttons (bottom-right) */
+#controlButtons {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #1e293b;
+  padding: 10px;
+  border: 2px solid #475569;
+  border-radius: 8px;
+}
+#controlButtons button {
+  margin: 2px;
+  font-size: 12px;
+  padding: 5px 10px;
+  background: #14b8a6;
+  color: #0f172a;
+}
+#controlButtons button:hover {
+  background: #0d9488;
+}
+
+/* Calculator */
+#calculator {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+  justify-items: center;
+}
+#calcDisplay {
+  grid-column: span 4;
+  width: 100%;
+  padding: 5px;
+  text-align: right;
+  background: #fff;
+  color: #000;
+}
+.calc-btn {
+  width: 100%;
+  height: 30px;
+  background: #14b8a6;
+  border: none;
+  color: #0f172a;
+  transition: background 0.2s;
+}
+.calc-btn:hover {
+  background: #0d9488;
+}
+.calc-wide {
+  grid-column: span 2;
+}
+
+
   </style>
 </head>
 <body>
@@ -316,7 +369,7 @@
       <!-- A2: Piggy Bank / Balances Block -->
       <div class="grid-item" id="A2">
         <div class="logo">🐖</div>
-        <div class="scroll-container" style="margin-top:30px;">
+        <div class="killer-table" style="margin-top:30px;">
           <table>
             <thead>
               <tr>
@@ -357,25 +410,27 @@
           <div class="asset-icon" onclick="openAssetModal()">USD</div>
         </div>
         <div style="margin-top:10px; text-align:center;">
-          <button onclick="openCentralBankModal('mint')" style="width:23%;">Mint</button>
-          <button onclick="openCentralBankModal('burn')" style="width:23%;">Burn</button>
-          <button onclick="openCentralBankModal('transfer')" style="width:50%;">Transfer</button>
+          <button onclick="openCentralBankModal('mint')" style="width:25%;">Mint</button>
+          <button onclick="openCentralBankModal('burn')" style="width:25%;">Burn</button>
+          <button onclick="openCentralBankModal('transfer')" style="width:54%;">Transfer</button>
         </div>
       </div>
       <!-- A4: User Block -->
-      <div class="grid-item" id="A4">
-        <div class="logo">👨‍💼</div>
-        <div style="margin-top:30px; text-align:center;">
-          <input type="text" placeholder="Bagi">
-          <input type="text" placeholder="bat@gmail.com">
-          <input type="text" placeholder="5021280612; Khaan">
-          <div style="margin-top:0px;">
-            <button onclick="updateUser()">Update</button>
-            <button onclick="toggleUserInputs()">Hide</button>
+<div class="grid-item" id="A4">
+  <div class="logo">👨‍💼</div>
+  <div style="margin-top:30px; text-align:center;">
+    <!-- Added IDs to inputs for easy retrieval -->
+    <input id="userName" type="text" placeholder="Bagi">
+    <input id="userEmail" type="text" placeholder="bat@gmail.com">
+    <input id="userInfo" type="text" placeholder="5021280612; Khaan">
+    <div style="margin-top:0px;">
+      <!-- Wire up our new functions on click -->
+      <button onclick="updateUser()">Update</button>
+      <button onclick="toggleUserInputs()">Hide</button>
+    </div>
+  </div>
+</div>
 
-          </div>
-        </div>
-      </div>
       
       <!-- Row B -->
       <!-- B1: Network Block with Hexagon Nodes -->
@@ -585,7 +640,7 @@
           <span class="label-btn">Audit</span>
           <span class="label-btn">Market</span>
         </div>
-        <div class="scroll-container" style="margin-top:10px;">
+        <div class="killer-table" style="margin-top:10px;">
           <table>
             <thead>
               <tr>
@@ -759,73 +814,139 @@
     }
     document.getElementById('cbAction').onclick = processCentralBankAction;
     
-    // Trade Engine Logic
-    class Order {
-      constructor(id, type, price, quantity, timestamp = Date.now()) {
-        this.id = id;
-        this.type = type; // 'buy' or 'sell'
-        this.price = price;
-        this.quantity = quantity;
-        this.timestamp = timestamp;
-      }
+// Trade Engine Logic
+
+// Order class: represents a single buy or sell order
+class Order {
+  constructor(id, type, price, quantity, timestamp = Date.now()) {
+    this.id = id;            // Unique ID
+    this.type = type;        // 'buy' or 'sell'
+    this.price = price;      // Limit price
+    this.quantity = quantity;
+    this.timestamp = timestamp;
+  }
+}
+
+// Helper compare functions for insertion
+function buyCompare(a, b) {
+  // Higher price first; if equal, earlier timestamp first
+  if (a.price !== b.price) return b.price - a.price;
+  return a.timestamp - b.timestamp;
+}
+function sellCompare(a, b) {
+  // Lower price first; if equal, earlier timestamp first
+  if (a.price !== b.price) return a.price - b.price;
+  return a.timestamp - b.timestamp;
+}
+
+// Insert order via binary search to keep array sorted
+function insertOrder(sortedArray, newOrder, compareFn) {
+  let left = 0;
+  let right = sortedArray.length - 1;
+
+  while (left <= right) {
+    const mid = Math.floor((left + right) / 2);
+    const cmp = compareFn(newOrder, sortedArray[mid]);
+    if (cmp < 0) {
+      right = mid - 1;
+    } else {
+      left = mid + 1;
     }
-    class OrderBook {
-      constructor() {
-        this.buyOrders = [];
-        this.sellOrders = [];
-        this.orderIdCounter = 1;
-      }
-      addOrder(type, price, quantity) {
-        const order = new Order(this.orderIdCounter++, type, price, quantity);
-        if (type === 'buy') {
-          this.buyOrders.push(order);
-          // Sort buy orders: higher price first, then earlier time
-          this.buyOrders.sort((a, b) => b.price - a.price || a.timestamp - b.timestamp);
-        } else if (type === 'sell') {
-          this.sellOrders.push(order);
-          // Sort sell orders: lower price first, then earlier time
-          this.sellOrders.sort((a, b) => a.price - b.price || a.timestamp - b.timestamp);
-        }
-        console.log(`Order added: ${JSON.stringify(order)}`);
-        this.matchOrders();
-      }
-      matchOrders() {
-        while (this.buyOrders.length && this.sellOrders.length &&
-               this.buyOrders[0].price >= this.sellOrders[0].price) {
-          const buyOrder = this.buyOrders[0];
-          const sellOrder = this.sellOrders[0];
-          const tradedQuantity = Math.min(buyOrder.quantity, sellOrder.quantity);
-          const tradePrice = sellOrder.price;
-          console.log(`Trade executed: ${tradedQuantity} units @ ${tradePrice} between BuyOrder ${buyOrder.id} and SellOrder ${sellOrder.id}`);
-          buyOrder.quantity -= tradedQuantity;
-          sellOrder.quantity -= tradedQuantity;
-          if (buyOrder.quantity === 0) this.buyOrders.shift();
-          if (sellOrder.quantity === 0) this.sellOrders.shift();
-        }
-      }
-    }
-    var orderBook = new OrderBook();
-    function placeBuyOrder() {
-      var price = parseFloat(prompt("Enter buy order price:"));
-      var quantity = parseFloat(prompt("Enter buy order quantity:"));
-      if (!isNaN(price) && !isNaN(quantity) && price > 0 && quantity > 0) {
-        orderBook.addOrder('buy', price, quantity);
-      } else {
-        alert("Invalid input for buy order.");
-      }
-    }
-    function placeSellOrder() {
-      var price = parseFloat(prompt("Enter sell order price:"));
-      var quantity = parseFloat(prompt("Enter sell order quantity:"));
-      if (!isNaN(price) && !isNaN(quantity) && price > 0 && quantity > 0) {
-        orderBook.addOrder('sell', price, quantity);
-      } else {
-        alert("Invalid input for sell order.");
-      }
-    }
-    window.placeBuyOrder = placeBuyOrder;
-    window.placeSellOrder = placeSellOrder;
+  }
+
+  // Insert at the correct position
+  sortedArray.splice(left, 0, newOrder);
+}
+
+// OrderBook class: manages two sorted lists (buy/sell), matches trades
+class OrderBook {
+  constructor() {
+    this.buyOrders = [];   // Sorted descending by price
+    this.sellOrders = [];  // Sorted ascending by price
+    this.orderIdCounter = 1;
+    this.trades = [];      // Store executed trades (optional)
+  }
+
+  addOrder(type, price, quantity) {
+    const order = new Order(this.orderIdCounter++, type, price, quantity);
     
+    if (type === 'buy') {
+      insertOrder(this.buyOrders, order, buyCompare);
+    } else {
+      insertOrder(this.sellOrders, order, sellCompare);
+    }
+
+    console.log(`Order added: ${JSON.stringify(order)}`);
+    this.matchOrders();
+  }
+
+  // Match top buy vs. top sell as long as buy >= sell
+  matchOrders() {
+    while (this.buyOrders.length && this.sellOrders.length &&
+           this.buyOrders[0].price >= this.sellOrders[0].price) {
+      
+      const buyOrder = this.buyOrders[0];
+      const sellOrder = this.sellOrders[0];
+      const tradedQuantity = Math.min(buyOrder.quantity, sellOrder.quantity);
+      const tradePrice = sellOrder.price; // Typically, match at the sell order's price
+
+      console.log(
+        `Trade executed: ${tradedQuantity} units @ ${tradePrice} `
+        + `between BuyOrder ${buyOrder.id} and SellOrder ${sellOrder.id}`
+      );
+
+      // (Optional) Store the trade
+      this.trades.push({
+        buyOrderId: buyOrder.id,
+        sellOrderId: sellOrder.id,
+        price: tradePrice,
+        quantity: tradedQuantity,
+        timestamp: Date.now()
+      });
+
+      // Update order quantities
+      buyOrder.quantity -= tradedQuantity;
+      sellOrder.quantity -= tradedQuantity;
+
+      // Remove fully filled orders
+      if (buyOrder.quantity === 0) {
+        this.buyOrders.shift(); // remove from front
+      }
+      if (sellOrder.quantity === 0) {
+        this.sellOrders.shift(); // remove from front
+      }
+    }
+  }
+}
+
+// Global instance of the optimized OrderBook
+var orderBook = new OrderBook();
+
+// Simple functions to place orders from user prompts
+function placeBuyOrder() {
+  const price = parseFloat(prompt("Enter buy order price:"));
+  const quantity = parseFloat(prompt("Enter buy order quantity:"));
+  if (!isNaN(price) && !isNaN(quantity) && price > 0 && quantity > 0) {
+    orderBook.addOrder('buy', price, quantity);
+  } else {
+    alert("Invalid input for buy order.");
+  }
+}
+
+function placeSellOrder() {
+  const price = parseFloat(prompt("Enter sell order price:"));
+  const quantity = parseFloat(prompt("Enter sell order quantity:"));
+  if (!isNaN(price) && !isNaN(quantity) && price > 0 && quantity > 0) {
+    orderBook.addOrder('sell', price, quantity);
+  } else {
+    alert("Invalid input for sell order.");
+  }
+}
+
+// Expose these functions if you want to call them from buttons, etc.
+window.placeBuyOrder = placeBuyOrder;
+window.placeSellOrder = placeSellOrder;
+
     // Calculator Functions
     function calcInput(value) {
       var display = document.getElementById('calcDisplay');
@@ -880,7 +1001,7 @@
     }
     
     // Draw a simple line chart on window load
-      window.onload = function() {
+  window.onload = function() {
   const canvas = document.getElementById('lineChart');
   const ctx = canvas.getContext('2d');
 
@@ -911,7 +1032,7 @@
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // 1) Draw a subtle background grid
-  ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+  ctx.strokeStyle = '#2dd4bf';
   ctx.lineWidth = 1;
   ctx.beginPath();
   // Vertical lines
@@ -997,7 +1118,7 @@
   }
 };
 
-    function updateUser() {
+function updateUser() {
   // Grab the values from the three input fields
   const name = document.getElementById('userName').value;
   const email = document.getElementById('userEmail').value;
@@ -1014,7 +1135,8 @@ function toggleUserInputs() {
     input.type = (input.type === 'text') ? 'password' : 'text';
   });
 }
-    
+
+
   </script>
 </body>
 </html>
