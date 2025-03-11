@@ -116,7 +116,7 @@ h1, h2, h3, h4, h5, h6, p, span, label {
 button {
   cursor: pointer;
   font-size: 14px;
-  background: #14b8a6;
+	background: #14b8a6;
   color: #0f172a;
   border: none;
   border-radius: 4px;
@@ -203,24 +203,28 @@ table.killer-table {
   color: #f8fafc;
 }
 
-/* Asset Icon */
+/* Killer Asset Icon */
 .asset-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  background: #14b8a6;
+  background: linear-gradient(135deg, #14b8a6, #0d9488);
   color: #fff;
   font-size: 10px;
-  border: 1px solid #fff;
-  margin: 2px;
+  border: 1.5px solid rgba(255, 255, 255, 0.8);
+  margin: 3px;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
+
 .asset-icon:hover {
-  background: #0d9488;
+  background: linear-gradient(135deg, #0d9488, #0a7a70);
+  transform: scale(1.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 /* Chart area in B2 */
@@ -345,6 +349,17 @@ table.killer-table {
 }
 .calc-wide {
   grid-column: span 2;
+}
+
+#footer {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(248, 250, 252, 0.5); /* subtle, near-white color with reduced opacity */
+  font-size: 12px;
+  font-family: Arial, sans-serif;
+  pointer-events: none; /* so it doesn't interfere with other interactions */
 }
 
 
@@ -686,6 +701,9 @@ table.killer-table {
     <button onclick="setGridTemplate('default')">Default Layout</button>
     <button onclick="setGridTemplate('alternate')">Alternate Layout</button>
   </div>
+
+<footer id="footer">(c) trustchain</footer>
+
   
   <!-- Modal: Asset Details -->
   <div id="assetModal" class="modal">
@@ -979,8 +997,8 @@ window.placeSellOrder = placeSellOrder;
       } else if (template === 'alternate') {
         dashboard.style.gridTemplateAreas =
           `"A3 A3 A3 A3"
-	         "A4 C3 C3 B4"
-	         "A4 C1 C1 B4 "
+	   "A4 C3 C3 B4"
+	   "A4 C1 C1 B4 "
           `;
       }
     }
@@ -1032,7 +1050,7 @@ window.placeSellOrder = placeSellOrder;
   
   // Generate a new random data array of numPoints between 20 and 200
   function generateData() {
-    return Array.from({length: numPoints}, () => Math.floor(Math.random() * 10) + 200);
+    return Array.from({length: numPoints}, () => Math.floor(Math.random() * 5) +200);
   }
   
   // Given an array of data, determine min and max values
