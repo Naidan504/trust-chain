@@ -880,21 +880,120 @@
     
     // Draw a simple line chart on window load
     window.onload = function() {
-      var ctx = document.getElementById('lineChart').getContext('2d');
-      ctx.beginPath();
-      ctx.moveTo(0, 120);
-      ctx.lineTo(50, 100);
-      ctx.lineTo(100, 140);
-      ctx.lineTo(150, 90);
-      ctx.lineTo(200, 110);
-      ctx.lineTo(250, 100);
-      ctx.lineTo(300, 130);
-      ctx.lineTo(350, 80);
-      ctx.lineTo(380, 120);
-      ctx.strokeStyle = '#4caf50'; /* Bright green line for visibility */
-      ctx.lineWidth = 2;
-      ctx.stroke();
-    };
+  const canvas = document.getElementById('lineChart');
+  const ctx = canvas.getContext('2d');
+
+  // Example data points (y-values). You can dynamically fetch these from your backend.
+  const data = [120, 100, 140, 90, 110, 100, 130, 80, 120];
+
+  // Chart configuration
+  const padding = 40;           // Space around edges for axes/labels
+  const pointRadius = 4;        // Circle marker radius
+  const spacingX = (canvas.width - padding * 2) / (data.length - 1);
+  const maxDataValue = Math.max(...data);
+  const minDataValue = Math.min(...data);
+
+  // Optional: define a top/bottom boundary for your chart
+  const chartTop = padding;
+  const chartBottom = canvas.height - padding;
+  const chartHeight = chartBottom - chartTop;
+
+  // Convert data value to canvas Y coordinate (invert because canvas origin is top-left)
+  function getY(value) {
+    const scale = (value - minDataValue) / (maxDataValue - minDataValue);
+    return chartBottom - scale * chartHeight;
+  }
+
+  // Clear the canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // 1) Draw a background grid (vertical and horizontal lines)
+  ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  // Vertical grid lines
+  for (let x = padding; x <= canvas.width - padding; x += spacingX) {
+    ctx.moveTo(x, chartTop);
+    ctx.lineTo(x, chartBottom);
+  }
+  // Horizontal grid lines (5 steps, for example)
+  const steps = 5;
+  for (let i = 0; i <= steps; i++) {
+    const y = chartBottom - (chartHeight / steps) * i;
+    ctx.moveTo(padding, y);
+    ctx.lineTo(canvas.width - padding, y);
+  }
+  ctx.stroke();
+  ctx.closePath();
+
+  // 2) Draw the “killer” line chart with a gradient fill
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = '#4caf50'; // line color
+  ctx.fillStyle = createGradient(); // fill gradient beneath the line
+
+  ctx.beginPath();
+  // Move to first data point
+  ctx.moveTo(padding, getY(data[0]));
+
+  // Option A: Straight lines
+  // for (let i = 1; i < data.length; i++) {
+  //   ctx.lineTo(padding + i * spacingX, getY(data[i]));
+  // }
+
+  // Option B: Curved (Bezier) lines
+  for (let i = 1; i < data.length; i++) {
+    const xMid = padding + (i - 0.5) * spacingX;
+    const yMid = (getY(data[i - 1]) + getY(data[i])) / 2;
+    const xCurrent = padding + i * spacingX;
+    const yCurrent = getY(data[i]);
+    // Quadratic curve from last point to this midpoint, then to this point
+    ctx.quadraticCurveTo(padding + (i - 1) * spacingX, getY(data[i - 1]), xMid, yMid);
+    ctx.quadraticCurveTo(xMid, yMid, xCurrent, yCurrent);
+  }
+
+  // Fill the area under the line
+  ctx.lineTo(padding + (data.length - 1) * spacingX, chartBottom);
+  ctx.lineTo(padding, chartBottom);
+  ctx.closePath();
+  ctx.fill();    // Fill gradient
+  ctx.stroke();  // Outline the line
+
+  // 3) Draw circle markers for each data point
+  ctx.fillStyle = '#ffffff';
+  for (let i = 0; i < data.length; i++) {
+    const x = padding + i * spacingX;
+    const y = getY(data[i]);
+    ctx.beginPath();
+    ctx.arc(x, y, pointRadius, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.closePath();
+  }
+
+  // 4) (Optional) Axis Labels
+  ctx.fillStyle = '#ffffff';
+  ctx.font = '12px Arial';
+  ctx.textAlign = 'center';
+  // X labels
+  for (let i = 0; i < data.length; i++) {
+    const x = padding + i * spacingX;
+    ctx.fillText(`Pt ${i+1}`, x, chartBottom + 15);
+  }
+  // Y labels
+  for (let i = 0; i <= steps; i++) {
+    const val = minDataValue + ((maxDataValue - minDataValue) / steps) * i;
+    const y = chartBottom - (chartHeight / steps) * i;
+    ctx.textAlign = 'right';
+    ctx.fillText(val.toFixed(0), padding - 5, y + 3);
+  }
+
+  // Create a vertical gradient for the fill
+  function createGradient() {
+    const gradient = ctx.createLinearGradient(0, chartTop, 0, chartBottom);
+    gradient.addColorStop(0, 'rgba(76, 175, 80, 0.4)');   // #4caf50 at 40% opacity
+    gradient.addColorStop(1, 'rgba(76, 175, 80, 0)');     // fade to transparent
+    return gradient;
+  }
+};
   </script>
 </body>
 </html>
