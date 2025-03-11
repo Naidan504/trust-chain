@@ -370,8 +370,9 @@
           <input type="text" placeholder="bat@gmail.com">
           <input type="text" placeholder="5021280612; Khaan">
           <div style="margin-top:0px;">
-            <button>Update</button>
-            <button>Hide</button>
+            <button onclick="updateUser()">Update</button>
+            <button onclick="toggleUserInputs()">Hide</button>
+
           </div>
         </div>
       </div>
@@ -995,6 +996,25 @@
     return gradient;
   }
 };
+
+    function updateUser() {
+  // Grab the values from the three input fields
+  const name = document.getElementById('userName').value;
+  const email = document.getElementById('userEmail').value;
+  const info = document.getElementById('userInfo').value;
+
+  // For demo, just show an alert
+  // In a real app, you'd likely save these to a database or state
+  alert(`User updated!\n\nName: ${name}\nEmail: ${email}\nInfo: ${info}`);
+}
+
+function toggleUserInputs() {
+  ['userName', 'userEmail', 'userInfo'].forEach(id => {
+    let input = document.getElementById(id);
+    input.type = (input.type === 'text') ? 'password' : 'text';
+  });
+}
+    
   </script>
 </body>
 </html>
