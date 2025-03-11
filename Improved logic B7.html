@@ -2,13 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Improved Logic B7 - Trade Engine Dashboard</title>
+  <title>Improved logic B7 - Copy - Updated Color UX</title>
   <style>
+    /* 
+      Dark Theme Color Scheme:
+      - Body (primary bg): #1C2B3A
+      - Dashboard frame:   #1E2E3F
+      - Grid items:        #022f55
+      - Text:              #FFFFFF
+      - Borders/dividers:  #29527a
+      - Primary buttons:   #007ACC
+      - Secondary labels:  #3FA7D6
+      - Hover accent:      #005b99
+      - Chart line:        #4caf50
+    */
+
     /* Global Styles */
     body {
       margin: 0;
       padding: 0;
-      background: #0d1b2a;
+      background: #1C2B3A; /* Dark navy */
       font-family: Arial, sans-serif;
       color: #fff;
     }
@@ -23,8 +36,8 @@
     #dashboard {
       width: 806px;
       height: 704px;
-      background: #001f3f;
-      border: 2px solid #003366;
+      background: #1E2E3F; /* Slightly lighter for the container */
+      border: 2px solid #29527a; /* Teal border */
       display: grid;
       grid-template-columns: repeat(4, 200px);
       grid-template-rows: 200px 300px 200px;
@@ -43,8 +56,9 @@
       overflow: auto;
       scrollbar-width: thin;
       scrollbar-color: transparent transparent;
-      background: #012a4a;
+      background: #022f55; /* Darker bluish for content sections */
       position: relative;
+      border: 1px solid #29527a; /* Subtle border around each cell */
     }
     /* Grid area assignments */
     #A1 { grid-area: A1; }
@@ -66,6 +80,7 @@
       left: 10px;
       font-size: 18px;
     }
+
     /* Input fields */
     input[type="text"],
     input[type="password"],
@@ -76,31 +91,43 @@
       box-sizing: border-box;
       background: #fff;
       color: #000;
-      border: 1px solid #003366;
+      border: 1px solid #29527a;
       border-radius: 4px;
     }
+
     /* Buttons */
     button {
       cursor: pointer;
       font-size: 12px;
-      background: #003366;
+      background: #007ACC; /* Primary button color */
       color: #fff;
       border: none;
       border-radius: 4px;
+      padding: 5px 8px;
+      transition: background 0.2s;
     }
+    button:hover {
+      background: #005b99; /* Hover accent */
+    }
+
     /* Label buttons */
     .label-btn {
       display: inline-block;
       width: 60px;
       height: 20px;
-      line-height: 21px;
+      line-height: 20px;
       text-align: center;
       border-radius: 10px;
-      background: #003366;
+      background: #3FA7D6; /* Secondary label color */
       margin: 2px;
       font-size: 12px;
       cursor: pointer;
+      transition: background 0.2s;
     }
+    .label-btn:hover {
+      background: #005b99; /* Hover accent for labels */
+    }
+
     /* Table styling */
     table {
       width: 95%;
@@ -111,10 +138,11 @@
       table-layout: fixed;
     }
     table, th, td {
-      border: 1px solid #003366;
+      border: 1px solid #29527a; /* Teal border for tables */
       padding: 4px;
       text-align: center;
     }
+
     /* Asset icon */
     .asset-icon {
       display: inline-flex;
@@ -123,19 +151,24 @@
       width: 22px;
       height: 22px;
       border-radius: 50%;
-      background: #003366;
+      background: #007ACC; /* Match primary button color */
       color: #fff;
       font-size: 10px;
       border: 1px solid #fff;
       margin: 2px;
       cursor: pointer;
+      transition: background 0.2s;
     }
+    .asset-icon:hover {
+      background: #005b99;
+    }
+
     /* Chart area in B2 */
     #B2 .chart-area {
       height: 200px;
-      background: #012a4a;
+      background: #022f55;
       padding: 5px;
-      border-bottom: 1px solid #003366;
+      border-bottom: 1px solid #29527a;
     }
     #B2 .coin-container {
       overflow-x: auto;
@@ -146,6 +179,7 @@
       gap: 5px;
     }
     #B2 .coin-container .asset-icon { margin-right: 5px; }
+
     /* Modal styles */
     .modal {
       display: none;
@@ -158,25 +192,25 @@
       z-index: 100;
     }
     .modal-content {
-      background: #001f3f;
+      background: #1E2E3F;
       padding: 10px;
       width: 330px;
       height: 450px;
       display: grid;
       grid-template-rows: repeat(4, 1fr);
       gap: 5px;
-      border: 1px solid #003366;
+      border: 1px solid #29527a;
       border-radius: 8px;
     }
     .modal-row {
-      border: 1px solid #003366;
+      border: 1px solid #29527a;
       padding: 5px;
       overflow: auto;
     }
     .file-list {
       height: 100%;
       overflow-y: auto;
-      border-right: 1px solid #003366;
+      border-right: 1px solid #29527a;
     }
     .file-item {
       display: flex;
@@ -191,6 +225,7 @@
       justify-content: space-around;
       align-items: center;
     }
+
     /* Chat messages */
     .chat-messages {
       max-height: 120px;
@@ -202,7 +237,7 @@
       align-items: center;
       padding: 4px 0;
       font-size: 12px;
-      border-bottom: 1px solid #003366;
+      border-bottom: 1px solid #29527a;
     }
     .chat-message .avatar { margin-right: 8px; }
     .chat-message .time {
@@ -210,22 +245,27 @@
       text-align: right;
       width: 40px;
     }
-    /* Control buttons container fixed to the bottom-right outside the dashboard container */
+
+    /* Control buttons container (bottom-right) */
     #controlButtons {
       position: fixed;
       bottom: 20px;
       right: 20px;
-      background: #001f3f;
+      background: #1E2E3F;
       padding: 10px;
-      border: 2px solid #003366;
+      border: 2px solid #29527a;
       border-radius: 8px;
     }
     #controlButtons button {
       margin: 0 5px;
       font-size: 12px;
       padding: 5px 10px;
-      cursor: pointer;
+      background: #007ACC;
     }
+    #controlButtons button:hover {
+      background: #005b99;
+    }
+
     /* Calculator Styles */
     #calculator {
       display: grid;
@@ -238,10 +278,19 @@
       width: 100%;
       padding: 5px;
       text-align: right;
+      background: #fff;
+      color: #000;
     }
     .calc-btn {
       width: 100%;
       height: 40px;
+      background: #007ACC;
+      border: none;
+      color: #fff;
+      transition: background 0.2s;
+    }
+    .calc-btn:hover {
+      background: #005b99;
     }
     .calc-wide {
       grid-column: span 2;
@@ -338,36 +387,52 @@
         <div style="position: relative; width:100%; height:100%;">
           <svg width="180" height="200" style="position:absolute;top:0;left:0;pointer-events:none">
             <g transform="translate(90,100)">
-              <polygon points="60,0 30,52 -30,52 -60,0 -30,-52 30,-52" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
-              <line x1="0" y1="0" x2="60" y2="0" stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
-              <line x1="0" y1="0" x2="30" y2="52" stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
-              <line x1="0" y1="0" x2="-30" y2="52" stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
-              <line x1="0" y1="0" x2="-60" y2="0" stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
-              <line x1="0" y1="0" x2="-30" y2="-52" stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
-              <line x1="0" y1="0" x2="30" y2="-52" stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
+              <!-- Keep lines white for clarity against the dark background -->
+              <polygon points="60,0 30,52 -30,52 -60,0 -30,-52 30,-52"
+                       fill="none"
+                       stroke="rgba(255,255,255,0.7)"
+                       stroke-width="2"/>
+              <line x1="0" y1="0" x2="60" y2="0"
+                    stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
+              <line x1="0" y1="0" x2="30" y2="52"
+                    stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
+              <line x1="0" y1="0" x2="-30" y2="52"
+                    stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
+              <line x1="0" y1="0" x2="-60" y2="0"
+                    stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
+              <line x1="0" y1="0" x2="-30" y2="-52"
+                    stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
+              <line x1="0" y1="0" x2="30" y2="-52"
+                    stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
               <g font-size="10" text-anchor="middle" fill="#000">
                 <g>
-                  <circle cx="60" cy="0" r="8" fill="orange" style="filter:drop-shadow(0 0 2px rgba(0,0,0,0.5));"/>
+                  <circle cx="60" cy="0" r="8" fill="orange"
+                          style="filter:drop-shadow(0 0 2px rgba(0,0,0,0.5));"/>
                   <text x="60" y="4">1</text>
                 </g>
                 <g transform="rotate(60)">
-                  <circle cx="60" cy="0" r="8" fill="orange" style="filter:drop-shadow(0 0 2px rgba(0,0,0,0.5));"/>
+                  <circle cx="60" cy="0" r="8" fill="orange"
+                          style="filter:drop-shadow(0 0 2px rgba(0,0,0,0.5));"/>
                   <text x="60" y="4">2</text>
                 </g>
                 <g transform="rotate(120)">
-                  <circle cx="60" cy="0" r="8" fill="orange" style="filter:drop-shadow(0 0 2px rgba(0,0,0,0.5));"/>
+                  <circle cx="60" cy="0" r="8" fill="orange"
+                          style="filter:drop-shadow(0 0 2px rgba(0,0,0,0.5));"/>
                   <text x="60" y="4">3</text>
                 </g>
                 <g transform="rotate(180)">
-                  <circle cx="60" cy="0" r="8" fill="green" style="filter:drop-shadow(0 0 2px rgba(0,0,0,0.5));"/>
+                  <circle cx="60" cy="0" r="8" fill="green"
+                          style="filter:drop-shadow(0 0 2px rgba(0,0,0,0.5));"/>
                   <text x="60" y="4">4</text>
                 </g>
                 <g transform="rotate(240)">
-                  <circle cx="60" cy="0" r="8" fill="green" style="filter:drop-shadow(0 0 2px rgba(0,0,0,0.5));"/>
+                  <circle cx="60" cy="0" r="8" fill="green"
+                          style="filter:drop-shadow(0 0 2px rgba(0,0,0,0.5));"/>
                   <text x="60" y="4">5</text>
                 </g>
                 <g transform="rotate(300)">
-                  <circle cx="60" cy="0" r="8" fill="green" style="filter:drop-shadow(0 0 2px rgba(0,0,0,0.5));"/>
+                  <circle cx="60" cy="0" r="8" fill="green"
+                          style="filter:drop-shadow(0 0 2px rgba(0,0,0,0.5));"/>
                   <text x="60" y="4">6</text>
                 </g>
               </g>
@@ -463,7 +528,7 @@
       <div class="grid-item" id="C2">
         <div class="logo">📋</div>
         <div style="margin-top:15px; margin-left:10px; padding:0 10px;">
-          <div class="order-book" style="font-size:12px; display:flex; flex-direction:column; gap:8px; background:#001f3f; padding:10px; border-radius:5px;">
+          <div class="order-book" style="font-size:12px; display:flex; flex-direction:column; gap:8px; background:#1E2E3F; padding:10px; border-radius:5px;">
             <div style="display:flex; flex-direction:column; gap:4px;">
               <div style="font-weight:bold; color:#FF4136; text-align:center;">SELL</div>
               <div style="color:#FF4136; display:flex; justify-content:space-between;">
@@ -578,15 +643,16 @@
       <div class="modal-row">
         <div style="overflow-x:auto; white-space:nowrap;">
           <div style="display:inline-block; margin-right:5px; text-align:center;">
-            <img src="./image1.jpg" width="80" height="60" alt="img1"><br>
+            <!-- Replace or update the src with your actual public image path -->
+            <img src="file:///C:/Users/bilgu/Pictures/Asset/image1.jpg" width="80" height="60" alt="img1"><br>
             <small>01/01</small>
           </div>
           <div style="display:inline-block; margin-right:5px; text-align:center;">
-            <img src="./image2.jpg" width="80" height="60" alt="img2"><br>
+            <img src="file:///C:/Users/bilgu/Pictures/Asset/image2.jpg" width="80" height="60" alt="img2"><br>
             <small>01/02</small>
           </div>
           <div style="display:inline-block; margin-right:5px; text-align:center;">
-            <img src="./image3.jpg" width="80" height="60" alt="img3"><br>
+            <img src="file:///C:/Users/bilgu/Pictures/Asset/image3.jpg" width="80" height="60" alt="img3"><br>
             <small>01/03</small>
           </div>
         </div>
@@ -712,9 +778,11 @@
         const order = new Order(this.orderIdCounter++, type, price, quantity);
         if (type === 'buy') {
           this.buyOrders.push(order);
+          // Sort buy orders: higher price first, then earlier time
           this.buyOrders.sort((a, b) => b.price - a.price || a.timestamp - b.timestamp);
         } else if (type === 'sell') {
           this.sellOrders.push(order);
+          // Sort sell orders: lower price first, then earlier time
           this.sellOrders.sort((a, b) => a.price - b.price || a.timestamp - b.timestamp);
         }
         console.log(`Order added: ${JSON.stringify(order)}`);
@@ -787,7 +855,6 @@
            "B1 B2 B2 B4"
            "C1 C2 C3 C4"`;
       } else if (template === 'alternate') {
-        // Fixed closing quote issue:
         dashboard.style.gridTemplateAreas =
           `"B2 B2"
            "C2 C3"
@@ -824,7 +891,7 @@
       ctx.lineTo(300, 130);
       ctx.lineTo(350, 80);
       ctx.lineTo(380, 120);
-      ctx.strokeStyle = '#fff';
+      ctx.strokeStyle = '#4caf50'; /* Bright green line for visibility */
       ctx.lineWidth = 2;
       ctx.stroke();
     };
