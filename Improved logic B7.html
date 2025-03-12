@@ -946,13 +946,13 @@ window.placeSellOrder = placeSellOrder;
       var dashboard = document.getElementById('dashboard');
       if (template === 'default') {
         dashboard.style.gridTemplateAreas =
-          `"A1 A3 A1 A4"
+          `"A1 A3 B1 A4"
            "C1 B2 B2 B4"
            "C4 A2 C2 C3"`;
       } else if (template === 'alternate') {
         dashboard.style.gridTemplateAreas =
           `"C3 A2 C1"
-	   "`;
+	  `;
       }
     }
     
