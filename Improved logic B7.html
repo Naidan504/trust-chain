@@ -384,39 +384,26 @@ table.killer-table {
       <!-- A2: Piggy Bank / Balances Block -->
       <div class="grid-item" id="A2">
         <div class="logo">💰</div>
-        <div class="killer-table" style="margin-top:30px;">
-          <table>
-            <thead>
-              <tr>
-                <th>Asset</th>
-                <th>Last Price</th>
-                <th>Qty</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><div class="asset-icon" onclick="openAssetModal()">INV</div></td>
-                <td>₮1500</td>
-                <td>100</td>
-              </tr>
-              <tr>
-                <td><div class="asset-icon" onclick="openAssetModal()">MNT</div></td>
-                <td>₮1</td>
-                <td>1600</td>
-              </tr>
-              <tr>
-                <td><div class="asset-icon" onclick="openAssetModal()">AUD</div></td>
-                <td>₮2200</td>
-                <td>100</td>
-              </tr>
-              <tr>
-                <td><div class="asset-icon" onclick="openAssetModal()">CAR</div></td>
-                <td>$15</td>
-                <td>75</td>
-              </tr>
-            </tbody>
-          </table>
+
+                <div class="chat-messages" style="margin-top:30px" id="chatMessages">
+          <div class="chat-message">
+            <div class="asset-icon" onclick="openAssetModal()">AUD</div>
+            <div class="message" style="flex:1; text-align:left;">+1%</div>
+            <div class="time">15,000</div>
+          </div>
+          <div class="chat-message">
+            <div class="asset-icon" onclick="openAssetModal()">FLT</div>
+            <div class="message" style="flex:1; text-align:left;">Score</div>
+            <div class="time">6,500</div>
+          </div>
+          <div class="chat-message">
+            <div class="asset-icon" onclick="openAssetModal()">HLT</div>
+            <div class="message" style="flex:1; text-align:left;">36-mo. policy</div>
+            <div class="time">1000</div>
+          </div>
         </div>
+
+
       </div>
       <!-- A3: Central Bank Block -->
       <div class="grid-item" id="A3">
@@ -518,19 +505,18 @@ table.killer-table {
           <canvas id="lineChart" width="370" height="200"></canvas>
         </div>
         <div style="margin-top:10px; text-align:left;">
-          <span class="label-btn">Investment</span>
-          <span class="label-btn">Insurance</span>
           <span class="label-btn">Currency</span>
+          <span class="label-btn">Flight</span>
+          <span class="label-btn">Insurance</span>
         </div>
         <div class="coin-container">
-          <div class="asset-icon" onclick="openAssetModal()">GRT</div>
           <div class="asset-icon" onclick="openAssetModal()">AUD</div>
           <div class="asset-icon" onclick="openAssetModal()">MNT</div>
-          <div class="asset-icon" onclick="openAssetModal()">CAR</div>
+          <div class="asset-icon" onclick="openAssetModal()">SYD</div>
+          <div class="asset-icon" onclick="openAssetModal()">MIL</div>
           <div class="asset-icon" onclick="openAssetModal()">NTR</div>
-          <div class="asset-icon" onclick="openAssetModal()">BDI</div>
-          <div class="asset-icon" onclick="openAssetModal()">GOB</div>
-          <div class="asset-icon" onclick="openAssetModal()">BTC</div>
+          <div class="asset-icon" onclick="openAssetModal()">HLT</div>
+          <div class="asset-icon" onclick="openAssetModal()">CAR</div>
           <div class="asset-icon" onclick="openAssetModal()">TOK</div>
           <div class="asset-icon" onclick="openCentralBankModal('mint')">NEW</div>
         </div>
@@ -571,20 +557,22 @@ table.killer-table {
           <span class="label-btn">Private</span>
           <span class="label-btn">Public</span>
         </div>
-        <div class="chat-messages" id="chatMessages">
+        
+
+	  <div class="chat-messages" id="chatMessages">
           <div class="chat-message">
             <div class="asset-icon avatar">👨‍💼</div>
-            <div class="message" style="flex:1; text-align:left;">Hello!</div>
+            <div class="message" style="flex:1; text-align:left;">Car sales</div>
             <div class="time">12:00</div>
           </div>
           <div class="chat-message">
             <div class="asset-icon avatar">🤠</div>
-            <div class="message" style="flex:1; text-align:left;">bond.mn</div>
+            <div class="message" style="flex:1; text-align:left;">CrowdfundTrees Project</div>
             <div class="time">14:25</div>
           </div>
           <div class="chat-message">
             <div class="asset-icon avatar">😎</div>
-            <div class="message" style="flex:1; text-align:left;">Bond transferred for storage</div>
+            <div class="message" style="flex:1; text-align:left;">Real estate RET</div>
             <div class="time">20:00</div>
           </div>
         </div>
@@ -655,43 +643,32 @@ table.killer-table {
           <span class="label-btn">Audit</span>
           <span class="label-btn">Market</span>
         </div>
-        <div class="killer-table" style="margin-top:10px;">
-          <table>
-            <thead>
-              <tr>
-                <th>Asset</th>
-                <th>Message</th>
-                <th>Qty</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><div class="asset-icon" onclick="openAssetModal()">LMN</div></td>
-                <td>Txn OK</td>
-                <td>25</td>
-              </tr>
-              <tr>
-                <td><div class="asset-icon" onclick="openAssetModal()">APL</div></td>
-                <td>Txn OK</td>
-                <td>25</td>
-              </tr>
-              <tr>
-                <td><div class="asset-icon" onclick="openAssetModal()">AUD</div></td>
-                <td>Mint!</td>
-                <td>25</td>
-              </tr>
-              <tr>
-                <td><div class="asset-icon" onclick="openAssetModal()">LMN</div></td>
-                <td>Txn OK</td>
-                <td>25</td>
-              </tr>
-            </tbody>
-          </table>
+
+        <div class="chat-messages" id="chatMessages">
+          <div class="chat-message">
+            <div class="asset-icon" onclick="openAssetModal()">AUD</div>
+            <div class="message" style="flex:1; text-align:left;">Cash</div>
+            <div class="time">150</div>
+          </div>
+          <div class="chat-message">
+            <div class="asset-icon" onclick="openAssetModal()">FLT</div>
+            <div class="message" style="flex:1; text-align:left;">Issued flight ticket</div>
+            <div class="time">2</div>
+          </div>
+          <div class="chat-message">
+            <div class="asset-icon" onclick="openAssetModal()">HLT</div>
+            <div class="message" style="flex:1; text-align:left;">Insurance policy</div>
+            <div class="time">1000</div>
+          </div>
         </div>
-        <div>
-          <button>Print</button>
-          <button>Report</button>
-        </div>
+
+        <!--
+	<div>
+	  <button>Print</button>
+	  <button>Report</button>
+	</div>
+	-->
+
       </div>
     </div>
   </div>
@@ -996,9 +973,9 @@ window.placeSellOrder = placeSellOrder;
            "C1 C2 C3 C4"`;
       } else if (template === 'alternate') {
         dashboard.style.gridTemplateAreas =
-          `"A3 A3 A3 A3"
-	   "A4 C3 C3 B4"
-	   "A4 C1 C1 B4 "
+          `"A1 C1 A3 A4"
+	   "B1 B2 B2 B4"
+	   "C4 A2 C2 C3 "
           `;
       }
     }
